@@ -121,6 +121,35 @@ int main(void)
                     PeakCount2 = 0;
                     ExtendMotor_4_Panel_2();
                     break;
+                    
+                /*
+                 * The main idea is there will be 3 types of actuator movement:
+                 * 1) Next/Previous Stage
+                 * 2) Keyed entry of stage select (1-16)
+                 * 3) Manual Keyed entry of counts to move for each motor. 
+                 * This last one is in the scenario of a crash in between stages
+                 * 
+                 * 
+                 */
+                    /*
+                     * int motorStateData12[16] = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
+                     * int motorStateData20[16] = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
+                     * 
+                     * int motor12Distance = 0;
+                     * int motor20Distance = 0;
+                     * int motorState = 0; //Starting state
+                     *
+                     
+                     
+                     */
+                case ']'://Next
+                    //if motorState < 16
+                    //motorState++;Increment index global variable
+                    //Get next motor state from MotorStateData
+                    //add MotorStateData to motor12/20Distance
+                case '['://Previous
+                
+               
 				case '1':
                     
 					if (wWhatPanel == PANEL_1)
