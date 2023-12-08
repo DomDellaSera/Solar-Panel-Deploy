@@ -1,0 +1,30 @@
+Gerber Rev A/
+Motor.o
+PVInverter_Statemachine.o
+PVInverter_Variables.o
+PVInverter_init.o
+PVInverter_isr.o
+PVInverter_main.o
+PVMicroInverter V1.01.08.hex
+PVMicroInverter.X/
+PVMicroInverter.cof
+PVMicroInverter.hex
+PVMicroInverter.map
+PVMicroInverter.mcp
+PVMicroInverter.mcs
+PVMicroInverter.mcw
+SOLAR PANEL DEPLOY.DBK
+SOLAR PANEL DEPLOY.DSN
+SOLAR PANEL DEPLOY.ERR
+SOLAR PANEL DEPLOY.MAX
+SOLAR PANEL DEPLOY.MNL
+Solar Panel Deploy.opj
+inc/
+layout.log
+traps.o
+uart.o
+
+
+
+h/*.bak
+src/*.bak
