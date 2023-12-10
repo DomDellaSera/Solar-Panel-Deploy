@@ -174,6 +174,32 @@ int main(void)
                     break;
 
                 case '['://Previous
+                    if (PeakCount > wTravelCmd_a && PeakCount2 > wTravelCmd_b) {
+                        //We should only allow this case to be chosen if the motors are still
+                        break;
+                    }
+                    if (motorState < 1) {
+                       
+           
+                        break;
+                    }
+
+                    
+                    wTravelCmd_b = motorStateDataB20[motorState];
+                    wTravelCmd_a = motorStateDataA12[motorState];
+                    Counting = TRUE;
+                    Counting2 = TRUE;
+                    PeakCount = 0;
+                    PeakCount2 = 0;
+                    RetractMotor_3_Panel_2();                   
+                    RetractMotor_4_Panel_2();
+                    /*
+                     Will the position of motorState  affect our functionality significantly?
+                     * May need to consider later
+                     */
+                    motorState--; 
+
+                    break;
                 
                
 				case '1':
