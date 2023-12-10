@@ -147,6 +147,17 @@ int main(void)
                     //motorState++;Increment index global variable
                     //Get next motor state from MotorStateData
                     //add MotorStateData to motor12/20Distance
+                    
+                    wTravelCmd_b = 1000;
+                    wTravelCmd_a = 500;
+                    Counting = TRUE;
+                    Counting2 = TRUE;
+                    PeakCount = 0;
+                    PeakCount2 = 0;
+                    ExtendMotor_3_Panel_2();
+                    ExtendMotor_4_Panel_2();
+                    break;
+
                 case '['://Previous
                 
                
