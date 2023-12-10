@@ -38,6 +38,10 @@ unsigned int Counting2=FALSE;
 unsigned int wTravelCmd_a;
 unsigned int wTravelCmd_b;
 
+unsigned int motorStateDataB20[16] = {1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000};
+unsigned int motorStateDataA12[16] = {300,300,300,300,300,300,300,300,300,300,300,300,300,300,300,300};
+unsigned int motorState = 0;
+
 // ADC Variables
 int pvInverterOutputVoltage = 0; 
 unsigned int pvCellVoltage = 0;

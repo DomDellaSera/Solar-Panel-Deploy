@@ -54,6 +54,10 @@ extern unsigned int Counting2;
 extern unsigned int wTravelCmd_a;
 extern unsigned int wTravelCmd_b;
 
+extern unsigned int motorStateDataB20[];
+extern unsigned int motorStateDataA12[];
+extern unsigned int motorState;
+
 void IncrementFunction(word, word *);
 void IncrementFunction_2(word, word *);
 void incrementPeakThreshold(void);

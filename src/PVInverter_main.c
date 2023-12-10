@@ -143,19 +143,34 @@ int main(void)
                      
                      */
                 case ']'://Next
-                    //if motorState < 16
-                    //motorState++;Increment index global variable
+                    
+                    if (PeakCount > wTravelCmd_a && PeakCount2 > wTravelCmd_b) {
+                        //We should only allow this case to be chosen if the motors are still
+                        break;
+                    }
+                    if (motorState >= 16) {
+                        /*
+                         There are state variables but they don't seem to be used. They should probably be used here
+                         */
+                        break;
+                    }
                     //Get next motor state from MotorStateData
                     //add MotorStateData to motor12/20Distance
                     
-                    wTravelCmd_b = 1000;
-                    wTravelCmd_a = 500;
+                    wTravelCmd_b = motorStateDataB20[motorState];
+                    wTravelCmd_a = motorStateDataA12[motorState];
                     Counting = TRUE;
                     Counting2 = TRUE;
                     PeakCount = 0;
                     PeakCount2 = 0;
                     ExtendMotor_3_Panel_2();
                     ExtendMotor_4_Panel_2();
+                    /*
+                     Will the position of motorState  affect our functionality significantly?
+                     * May need to consider later
+                     */
+                    motorState++; 
+
                     break;
 
                 case '['://Previous
@@ -276,6 +291,12 @@ int main(void)
             IncrementFunction(MotorCurrent3, CurrentDeque);  
             IncrementFunction_2(MotorCurrent4, CurrentDeque2);  
             
+            
+            /*
+             I think this is an important juncture where we have to decide, based
+             * on potential failure modes how we want to end motor movement. The logic
+             * below is fine for now I think, but needs to be mulled over.
+             */
             if (PeakCount > wTravelCmd_a)
             {
                 Counting = FALSE;
@@ -289,6 +310,8 @@ int main(void)
                 PeakCount2 = 0;
 				TurnOffMotor_4();
             }
+            
+            
 
             wNewADCdata = FALSE;
 		}      
