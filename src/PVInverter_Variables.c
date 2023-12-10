@@ -38,8 +38,22 @@ unsigned int Counting2=FALSE;
 unsigned int wTravelCmd_a;
 unsigned int wTravelCmd_b;
 
-unsigned int motorStateDataB20[16] = {1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000};
-unsigned int motorStateDataA12[16] = {300,300,300,300,300,300,300,300,300,300,300,300,300,300,300,300};
+unsigned int motorStateDataB20[16] = {8993,
+2905,
+3789,
+4421,
+4749,
+4825,
+4724,
+4446,6000,6000,6000,6000,6000,6000,6000,6000};
+unsigned int motorStateDataA12[16] = {20157,
+4536,
+3905,
+3274,
+2523,
+1742,
+961,
+150,6000,6000,6000,6000,6000,6000,6000,6000};
 unsigned int motorState = 0;
 
 // ADC Variables

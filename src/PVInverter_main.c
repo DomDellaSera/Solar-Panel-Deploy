@@ -144,10 +144,10 @@ int main(void)
                      */
                 case ']'://Next
                     
-                    if (PeakCount > wTravelCmd_a && PeakCount2 > wTravelCmd_b) {
-                        //We should only allow this case to be chosen if the motors are still
-                        break;
-                    }
+              //      if (PeakCount > wTravelCmd_a && PeakCount2 > wTravelCmd_b) {
+                //        //We should only allow this case to be chosen if the motors are still
+                  //      break;
+                    //}
                     if (motorState >= 16) {
                         /*
                          There are state variables but they don't seem to be used. They should probably be used here
