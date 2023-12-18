@@ -14,6 +14,8 @@
 #include "uart.h"
 #include "Motor.h"
 #include <math.h>
+#include <stdio.h>
+#include <stdlib.h>
 
 #define HEXA										0
 #define DECIMAL									1
@@ -129,43 +131,26 @@ int main(void)
                  * 3) Manual Keyed entry of counts to move for each motor. 
                  * This last one is in the scenario of a crash in between stages
                  * 
-                 * 
-                 */
-                    /*
-                     * int motorStateData12[16] = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
-                     * int motorStateData20[16] = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
-                     * 
-                     * int motor12Distance = 0;
-                     * int motor20Distance = 0;
-                     * int motorState = 0; //Starting state
-                     *
-                     
+
                      
                      */
-                case '['://Next
+                case '['://Open
                     
-              //      if (PeakCount > wTravelCmd_a && PeakCount2 > wTravelCmd_b) {
-                //        //We should only allow this case to be chosen if the motors are still
-                  //      break;
-                    //}
+
                     if (motorState >= 17) {
                         /*
                          There are state variables but they don't seem to be used. They should probably be used here
                          */
                         break;
                     }
-                    //Get next motor state from MotorStateData
-                    //add MotorStateData to motor12/20Distance
+
+                    globalDataReset();
+ 
                     
-                    wTravelCmd_a = motorStateDataA12[motorState];
-                    wTravelCmd_b = motorStateDataB20[motorState];
-                    Counting = TRUE;
-                    Counting2 = TRUE;
-                    PeakCount = 0;
-                    PeakCount2 = 0;
-                    
-                    if (wTravelCmd_a >= 0)
+                    if (wTravelCmd_a >= 0){
                         ExtendMotor_3_Panel_2();
+                        wRetracting_a = FALSE;
+                    }
                     else
                     {
                         wTravelCmd_a *= -1;
@@ -173,41 +158,32 @@ int main(void)
                         wRetracting_a = TRUE;
                     }
                        
-                    if (wTravelCmd_b >= 0)
+                    if (wTravelCmd_b >= 0) {
                         ExtendMotor_4_Panel_2();
+                        wRetracting_b = FALSE;
+                    }
                     else
                     {
                         RetractMotor_4_Panel_2();
-                        wTravelCmd_b *= -1;
+                        //wTravelCmd_b *= -1;
                         wRetracting_b = TRUE;
                     }
-                    /*
-                     Will the position of motorState  affect our functionality significantly?
-                     * May need to consider later
-                     */
-                    motorState++; 
+
+                    
+                    motorState++; //Must increment after
 
                     break;
 
-                case ']'://Previous
-                    //if (PeakCount > wTravelCmd_a && PeakCount2 > wTravelCmd_b) {
-                        //We should only allow this case to be chosen if the motors are still
-                    //    break;
-                    //}
+                case ']'://Close
+
                     
                     if (motorState < 1) {                                 
                         break;
                     }
                    
-                    motorState--; 
+                    motorState--; //Must increment before data reset
+                    globalDataReset();
                     
-                    wTravelCmd_a = motorStateDataA12[motorState];
-                    wTravelCmd_b = motorStateDataB20[motorState];
-                    Counting = TRUE;
-                    Counting2 = TRUE;
-                    PeakCount = 0;
-                    PeakCount2 = 0;
-
                     // 12 inch actuator
                     if (wTravelCmd_a >= 0)
                     {
@@ -216,7 +192,7 @@ int main(void)
                     }
                     else
                     {
-                       wTravelCmd_a *= -1;
+                       //wTravelCmd_a *= -1;
                        ExtendMotor_3_Panel_2();
                        wRetracting_a = FALSE;
                     }
@@ -230,7 +206,7 @@ int main(void)
                     else
                     {
                         RetractMotor_4_Panel_2();
-                        wTravelCmd_b *= -1;
+                        //wTravelCmd_b *= -1;
                         wRetracting_b = FALSE;
                     }
                                         
@@ -370,7 +346,7 @@ int main(void)
              * on potential failure modes how we want to end motor movement. The logic
              * below is fine for now I think, but needs to be mulled over.
              */
-             if (PeakCount > wTravelCmd_a)
+             if (PeakCount > abs(wTravelCmd_a))
             {
                 Counting = FALSE;
                 PeakCount = 0;
@@ -381,7 +357,7 @@ int main(void)
 				TurnOffMotor_3();
             }
          
-           if (PeakCount2 > wTravelCmd_b)
+           if (PeakCount2 > abs(wTravelCmd_b))
             {
                 Counting2 = FALSE;
                 PeakCount2 = 0;
@@ -534,6 +510,19 @@ void IncrementFunction_2(word curVal, word *peakDeque)
         }
     }
 }
+
+void globalDataReset() {
+    wTravelCmd_a = motorStateDataA12[motorState];
+    wTravelCmd_b = motorStateDataB20[motorState];
+    Counting = TRUE;
+    Counting2 = TRUE;
+    PeakCount = 0;
+    PeakCount2 = 0;
+    
+}
+
+
+
 
 #if 0
 		ClrWdt();
