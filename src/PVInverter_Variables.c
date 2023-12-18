@@ -25,6 +25,8 @@ unsigned int wAxis_2_State = STOPPED;
 unsigned int wBalanceCounter = SECOND_2;
 unsigned int wWhatPanel;
 unsigned int wNewADCdata=FALSE;
+unsigned int wRetracting_a;
+unsigned int wRetracting_b;
 
 //Peak Counter Variables
 unsigned int PeakCount = 0;
@@ -35,25 +37,27 @@ unsigned int CurrentDeque[3];
 unsigned int CurrentDeque2[3];
 unsigned int Counting=FALSE;
 unsigned int Counting2=FALSE;
-unsigned int wTravelCmd_a;
-unsigned int wTravelCmd_b;
+int wTravelCmd_a;
+int wTravelCmd_b;
+int wTravelAccum_a;
+int wTravelAccum_b;
 
-unsigned int motorStateDataB20[16] = {8993,
-2905,
-3789,
-4421,
-4749,
-4825,
-4724,
-4446,6000,6000,6000,6000,6000,6000,6000,6000};
-unsigned int motorStateDataA12[16] = {20157,
-4536,
-3905,
-3274,
-2523,
-1742,
-961,
-150,6000,6000,6000,6000,6000,6000,6000,6000};
+int motorStateDataB20[17] = {5000,8869,3381,3944,4287,
+2450,
+4461,
+4165,
+3846,
+3405,2915,2352,1715,1102,318,
+-294,-1004};
+
+int motorStateDataA12[17] = {/*17580*/1000,1020,6510,3150,2520,
+1830,
+1170,
+450,
+-240,
+-990,-1650,-2340,-2970,-3570,-4110,
+-4590,-4950};
+
 unsigned int motorState = 0;
 
 // ADC Variables

@@ -14,7 +14,7 @@ void SendPanelSet_1_Axis_1_Curr(void)
 	bTransmit[INDEX_PAYLOAD_1] = wMotor_1_Curr;
 	bTransmit[INDEX_PAYLOAD_2] = wMotor_2_Curr >> 8;
 	bTransmit[INDEX_PAYLOAD_3] = wMotor_2_Curr;
-	SendPacket(PANEL_SET_1,PANEL_1_MOTOR_CURR,bTransmit);				// It is a polled transmit
+	SendPacket(PANEL_SET_1,PANEL_1_MOTOR_CURR,bTransmit);		// It is a polled transmit, PANEL_SET_1 address of Master
 }
 
 
@@ -27,6 +27,30 @@ void SendPanelSet_1_Axis_2_Curr(void)
 	SendPacket(PANEL_SET_1,PANEL_2_MOTOR_CURR,bTransmit);				// It is a polled transmit
 }
 
+
+void SendMotor3Motor4PeakCounts(void)
+{
+	bTransmit[INDEX_PAYLOAD_0] = PeakCount >> 8;                // Motor 3
+	bTransmit[INDEX_PAYLOAD_1] = PeakCount;
+	bTransmit[INDEX_PAYLOAD_2] = PeakCount2 >> 8;               // Motor 4
+	bTransmit[INDEX_PAYLOAD_3] = PeakCount2;
+	SendPacket(PANEL_SET_1,PEAK_COUNTS_MOTORS,bTransmit);		// It is a polled transmit, PANEL_SET_1 address of Master STM32F429
+}
+
+void SendMotor3Motor4PeakSums(void)
+{
+	bTransmit[INDEX_PAYLOAD_0] = wTravelAccum_a >> 8;           // Motor 3
+	bTransmit[INDEX_PAYLOAD_1] = wTravelAccum_a;
+	bTransmit[INDEX_PAYLOAD_2] = wTravelAccum_b >> 8;           // Motor 4
+	bTransmit[INDEX_PAYLOAD_3] = wTravelAccum_b;
+	SendPacket(PANEL_SET_1,PEAK_SUMS_MOTORS,bTransmit);			// It is a polled transmit, PANEL_SET_1 address of Master STM32F429
+}
+
+void SendArrayIndex(void)
+{
+	bTransmit[INDEX_PAYLOAD_0] = motorState;                    // motorState is ArrayIndex at 429 micro
+	SendPacket(PANEL_SET_1,ARRAY_INDEX,bTransmit);			// It is a polled transmit, PANEL_SET_1 address of Master STM32F429
+}
 
 void EqualizeCurrentsAxis_1(void)
 {

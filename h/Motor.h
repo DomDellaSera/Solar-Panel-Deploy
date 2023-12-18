@@ -35,6 +35,9 @@ enum panelNumber{
 #define LED_ON				0
 #define LED_OFF				1
 
+void SendArrayIndex(void);
+void SendMotor3Motor4PeakCounts(void);
+void SendMotor3Motor4PeakSums(void);
 void ExtendBothAxis_1_Motors(void);
 void ExtendBothAxis_2_Motors(void);
 void ContractBothAxis_1_Motors(void);

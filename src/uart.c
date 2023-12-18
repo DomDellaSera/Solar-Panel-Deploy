@@ -511,8 +511,8 @@ void Configure_UART(void)
 	U1MODEbits.BRGH = 0; 			// Low Speed mode
 	// Baud Rate 
 	// U1BRG = (Fcy/16*Baud Rate) - 1
-	// U1BRG = 21 for 115200, 129 for 19200, 2082 for 1200 baud
-	U1BRG = 21; 							// BAUD Rate Setting for 115200 (Fcy = Fosc/2 = 80MHz/2 = 40 Mhz)
+	// U1BRG = 10 for 230400, 21 for 115200, 129 for 19200, 2082 for 1200 baud
+	U1BRG = 10;                 // BAUD Rate Setting for 115200 (Fcy = Fosc/2 = 80MHz/2 = 40 Mhz)
 	U1STAbits.UTXISEL0 = 0; 	// Interrupt after one TX character is transmitted
 	U1STAbits.UTXISEL1 = 0;
 

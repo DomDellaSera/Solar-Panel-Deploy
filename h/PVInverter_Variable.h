@@ -41,6 +41,8 @@ extern unsigned int wAxis_2_State;
 extern unsigned int wBalanceCounter;
 extern unsigned int wWhatPanel;
 extern unsigned int wNewADCdata;
+extern unsigned int wRetracting_a;
+extern unsigned int wRetracting_b;
 
 //Peak Counter Variables
 extern unsigned int PeakCount;
@@ -51,11 +53,13 @@ extern unsigned int CurrentDeque[];
 extern unsigned int CurrentDeque2[];
 extern unsigned int Counting;
 extern unsigned int Counting2;
-extern unsigned int wTravelCmd_a;
-extern unsigned int wTravelCmd_b;
+extern int wTravelCmd_a;
+extern int wTravelCmd_b;
+extern int wTravelAccum_a;
+extern int wTravelAccum_b;
 
-extern unsigned int motorStateDataB20[];
-extern unsigned int motorStateDataA12[];
+extern int motorStateDataB20[];
+extern int motorStateDataA12[];
 extern unsigned int motorState;
 
 void IncrementFunction(word, word *);

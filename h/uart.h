@@ -29,7 +29,7 @@
 /*****************************************************************************
  * Equipment Addresses
  *****************************************************************************/
-#define PANEL_SET_1						1
+#define PANEL_SET_1					1
 #define PANEL_SET_2   				2
 #define PANEL_SET_3   				3
 #define PANEL_SET_4				   	4
@@ -39,21 +39,24 @@
  *****************************************************************************/
 #define PANEL_1_MOTOR_CURR		1
 #define PANEL_2_MOTOR_CURR		2
+#define PEAK_COUNTS_MOTORS      3
+#define PEAK_SUMS_MOTORS        4
+#define ARRAY_INDEX             5
 
 /***********************************************************/
 /**************** STM32F429 Interface Packet ***************/
 /***********************************************************/
-#define INDEX_STX_STM32			  0
+#define INDEX_STX_STM32         0
 #define INDEX_ADDR_STM32	    1
 #define INDEX_CMD_STM32		    2
 #define INDEX_FRAME_RATE     	3
 #define PACKET_NUMBER        	4
 
-#define INDEX_PAYLOAD_0       5
-#define INDEX_PAYLOAD_1       6
-#define INDEX_PAYLOAD_2       7
-#define INDEX_PAYLOAD_3       8
-#define INDEX_CHKSUM_STM32    9
+#define INDEX_PAYLOAD_0         5
+#define INDEX_PAYLOAD_1         6
+#define INDEX_PAYLOAD_2         7
+#define INDEX_PAYLOAD_3         8
+#define INDEX_CHKSUM_STM32      9
 
 #define MSG_LEN_STM32         (INDEX_CHKSUM_STM32 + 1)
 

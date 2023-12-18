@@ -142,13 +142,13 @@ int main(void)
                      
                      
                      */
-                case ']'://Next
+                case '['://Next
                     
               //      if (PeakCount > wTravelCmd_a && PeakCount2 > wTravelCmd_b) {
                 //        //We should only allow this case to be chosen if the motors are still
                   //      break;
                     //}
-                    if (motorState >= 16) {
+                    if (motorState >= 17) {
                         /*
                          There are state variables but they don't seem to be used. They should probably be used here
                          */
@@ -157,14 +157,30 @@ int main(void)
                     //Get next motor state from MotorStateData
                     //add MotorStateData to motor12/20Distance
                     
-                    wTravelCmd_b = motorStateDataB20[motorState];
                     wTravelCmd_a = motorStateDataA12[motorState];
+                    wTravelCmd_b = motorStateDataB20[motorState];
                     Counting = TRUE;
                     Counting2 = TRUE;
                     PeakCount = 0;
                     PeakCount2 = 0;
-                    ExtendMotor_3_Panel_2();
-                    ExtendMotor_4_Panel_2();
+                    
+                    if (wTravelCmd_a >= 0)
+                        ExtendMotor_3_Panel_2();
+                    else
+                    {
+                        wTravelCmd_a *= -1;
+                        RetractMotor_3_Panel_2();
+                        wRetracting_a = TRUE;
+                    }
+                       
+                    if (wTravelCmd_b >= 0)
+                        ExtendMotor_4_Panel_2();
+                    else
+                    {
+                        RetractMotor_4_Panel_2();
+                        wTravelCmd_b *= -1;
+                        wRetracting_b = TRUE;
+                    }
                     /*
                      Will the position of motorState  affect our functionality significantly?
                      * May need to consider later
@@ -173,32 +189,51 @@ int main(void)
 
                     break;
 
-                case '['://Previous
-                    if (PeakCount > wTravelCmd_a && PeakCount2 > wTravelCmd_b) {
+                case ']'://Previous
+                    //if (PeakCount > wTravelCmd_a && PeakCount2 > wTravelCmd_b) {
                         //We should only allow this case to be chosen if the motors are still
-                        break;
-                    }
-                    if (motorState < 1) {
-                       
-           
-                        break;
-                    }
-
+                    //    break;
+                    //}
                     
-                    wTravelCmd_b = motorStateDataB20[motorState];
+                    if (motorState < 1) {                                 
+                        break;
+                    }
+                   
+                    motorState--; 
+                    
                     wTravelCmd_a = motorStateDataA12[motorState];
+                    wTravelCmd_b = motorStateDataB20[motorState];
                     Counting = TRUE;
                     Counting2 = TRUE;
                     PeakCount = 0;
                     PeakCount2 = 0;
-                    RetractMotor_3_Panel_2();                   
-                    RetractMotor_4_Panel_2();
-                    /*
-                     Will the position of motorState  affect our functionality significantly?
-                     * May need to consider later
-                     */
-                    motorState--; 
 
+                    // 12 inch actuator
+                    if (wTravelCmd_a >= 0)
+                    {
+                        RetractMotor_3_Panel_2();
+                        wRetracting_a = TRUE;
+                    }
+                    else
+                    {
+                       wTravelCmd_a *= -1;
+                       ExtendMotor_3_Panel_2();
+                       wRetracting_a = FALSE;
+                    }
+
+                    // 20 inch actuator
+                    if (wTravelCmd_b >= 0)
+                    {
+                        RetractMotor_4_Panel_2();
+                        wRetracting_b = TRUE;
+                    }
+                    else
+                    {
+                        RetractMotor_4_Panel_2();
+                        wTravelCmd_b *= -1;
+                        wRetracting_b = FALSE;
+                    }
+                                        
                     break;
                 
                
@@ -230,6 +265,9 @@ int main(void)
 					break;
 				case '0':
                     PeakCount = 0;
+                    motorState = 0;
+                    wTravelAccum_a = 0;
+                    wTravelAccum_b = 0;
 					if (wWhatPanel == PANEL_1)
 					{
 						TurnOffBothAxis_1_Motors();
@@ -282,10 +320,19 @@ int main(void)
 					else if (wWhatPanel == PANEL_2)
 						ExtendMotor_4_Panel_2();
 					break;
+                case 'i':
+                    SendArrayIndex();
+                    break;
 				case 'q':
 					SendPanelSet_1_Axis_1_Curr();
 					SendPanelSet_1_Axis_2_Curr();
 					break;
+                case 'p':
+                    SendMotor3Motor4PeakCounts();
+                    break;
+                case 'r':
+                    SendMotor3Motor4PeakSums();
+                    break;
 				case 'x':
 					wWhatPanel = PANEL_1;
 					WhitePanel_1();
@@ -323,22 +370,27 @@ int main(void)
              * on potential failure modes how we want to end motor movement. The logic
              * below is fine for now I think, but needs to be mulled over.
              */
-            if (PeakCount > wTravelCmd_a)
+             if (PeakCount > wTravelCmd_a)
             {
                 Counting = FALSE;
                 PeakCount = 0;
+                if (wRetracting_a == FALSE)
+                    wTravelAccum_a--;       // this counted 1 extra so fix here
+                else
+                    wTravelAccum_a++;
 				TurnOffMotor_3();
             }
-            
-            if (PeakCount2 > wTravelCmd_b)
+         
+           if (PeakCount2 > wTravelCmd_b)
             {
                 Counting2 = FALSE;
                 PeakCount2 = 0;
+                if (wRetracting_b == FALSE)
+                    wTravelAccum_b--;       // this counted 1 extra so fix here
+                else
+                    wTravelAccum_b++;
 				TurnOffMotor_4();
-            }
-            
-            
-
+            }            
             wNewADCdata = FALSE;
 		}      
 	}	// end of while(1)
@@ -398,6 +450,12 @@ void incrementPeakThreshold(void)
     if (RefractoryCount > 3 && Counting == TRUE) 
     {
         PeakCount++;
+        
+        if (wRetracting_a == FALSE)
+            wTravelAccum_a++;
+        else
+            wTravelAccum_a--;
+        
         RefractoryCount = 0;
     }
 }
@@ -409,6 +467,10 @@ void incrementPeakThreshold2(void)
     if (RefractoryCount2 > 3 && Counting2 == TRUE) 
     {
         PeakCount2++;
+        if (wRetracting_b == FALSE)
+            wTravelAccum_b++;
+        else
+            wTravelAccum_b--;
         RefractoryCount2 = 0;
     }
 }
